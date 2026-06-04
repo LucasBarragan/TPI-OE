@@ -1,19 +1,56 @@
-print("=== SISTEMA DE GESTIÓN DE VACACIONES ===")
+import csv
 
-print("1. Solicitar vacaciones")
-print("2. Consultar saldo de días")
-print("3. Salir")
+def consultar_proveedor():
+    cuit_buscado = input("Ingrese el CUIT: ").strip()
+    if cuit_buscado == "":
+        print("Error: Debe ingresar un CUIT.")
+        return
 
-opcion = input("Seleccione una opción: ")
+    try:
+        with open("proveedores.csv", "r", encoding="utf-8") as archivo:
+            lector = csv.DictReader(archivo)
 
-if opcion == "1":
-    print("Has seleccionado solicitar vacaciones")
+            encontrado = False
 
-elif opcion == "2":
-    print("Consulta de saldo de días")
+            for proveedor in lector:
+                if proveedor["cuit"] == cuit_buscado:
+                    encontrado = True
 
-elif opcion == "3":
-    print("Saliendo del sistema")
+                    print("\n=== PROVEEDOR ENCONTRADO ===")
+                    print("CUIT:", proveedor["cuit"])
+                    print("Razón social:", proveedor["razon_social"])
+                    print("Rubro:", proveedor["rubro"])
+                    print("Email:", proveedor["email"])
+                    print("Teléfono:", proveedor["telefono"])
+                    break
 
-else:
-    print("Opción inválida")
+            if not encontrado:
+                print("Proveedor no registrado.")
+
+    except FileNotFoundError:
+        print("Error: No se encontró el archivo de proveedores.")
+
+while True:
+    print("\n=== SISTEMA DE PROVEEDORES ===")
+    print("1. Consultar proveedor")
+    print("2. Registrar proveedor")
+    print("3. Mostrar proveedores")
+    print("4. Salir")
+
+    opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        consultar_proveedor()
+
+    elif opcion == "2":
+        print("Registrar proveedor")
+
+    elif opcion == "3":
+        print("Mostrar proveedores")
+
+    elif opcion == "4":
+        print("Saliendo...")
+        break
+
+    else:
+        print("Opción inválida")
